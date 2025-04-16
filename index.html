@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Age Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background-color: #f0f8ff;
+    }
+    input {
+      padding: 10px;
+      margin: 5px;
+      width: 60px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Age Calculator</h1>
+  <p>Enter your Date of Birth:</p>
+  <input type="number" id="day" placeholder="DD" min="1" max="31">
+  <input type="number" id="month" placeholder="MM" min="1" max="12">
+  <input type="number" id="year" placeholder="YYYY" min="1900" max="2100">
+  <br><br>
+  <button onclick="calculateAge()">Calculate Age</button>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    function calculateAge() {
+      const day = parseInt(document.getElementById("day").value);
+      const month = parseInt(document.getElementById("month").value) - 1; // JS months are 0-based
+      const year = parseInt(document.getElementById("year").value);
+
+      const birthDate = new Date(year, month, day);
+      const today = new Date();
+
+      if (isNaN(birthDate.getTime()) || birthDate > today) {
+        document.getElementById("result").innerText = "Please enter a valid date of birth.";
+        return;
+      }
+
+      let ageYears = today.getFullYear() - birthDate.getFullYear();
+      let ageMonths = today.getMonth() - birthDate.getMonth();
+      let ageDays = today.getDate() - birthDate.getDate();
+
+      if (ageDays < 0) {
+        ageMonths--;
+        ageDays += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+      }
+
+      if (ageMonths < 0) {
+        ageYears--;
+        ageMonths += 12;
+      }
+
+      document.getElementById("result").innerText = 
+        `You are ${ageYears} year(s), ${ageMonths} month(s), and ${ageDays} day(s) old.`;
+    }
+  </script>
+
+</body>
+</html>
